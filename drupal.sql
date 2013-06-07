@@ -16,6 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `access`
+--
+
+DROP TABLE IF EXISTS `access`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `access` (
+  `aid` int(11) NOT NULL AUTO_INCREMENT,
+  `mask` varchar(255) NOT NULL DEFAULT '',
+  `type` varchar(255) NOT NULL DEFAULT '',
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`aid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `access`
+--
+
+LOCK TABLES `access` WRITE;
+/*!40000 ALTER TABLE `access` DISABLE KEYS */;
+/*!40000 ALTER TABLE `access` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `actions`
 --
 
@@ -40,6 +65,28 @@ LOCK TABLES `actions` WRITE;
 /*!40000 ALTER TABLE `actions` DISABLE KEYS */;
 INSERT INTO `actions` VALUES ('comment_publish_action','comment','comment_publish_action','','Publish comment'),('comment_save_action','comment','comment_save_action','','Save comment'),('comment_unpublish_action','comment','comment_unpublish_action','','Unpublish comment'),('node_make_sticky_action','node','node_make_sticky_action','','Make content sticky'),('node_make_unsticky_action','node','node_make_unsticky_action','','Make content unsticky'),('node_promote_action','node','node_promote_action','','Promote content to front page'),('node_publish_action','node','node_publish_action','','Publish content'),('node_save_action','node','node_save_action','','Save content'),('node_unpromote_action','node','node_unpromote_action','','Remove content from front page'),('node_unpublish_action','node','node_unpublish_action','','Unpublish content'),('system_block_ip_action','user','system_block_ip_action','','Ban IP address of current user'),('user_block_user_action','user','user_block_user_action','','Block current user');
 /*!40000 ALTER TABLE `actions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `actions_aid`
+--
+
+DROP TABLE IF EXISTS `actions_aid`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `actions_aid` (
+  `aid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`aid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `actions_aid`
+--
+
+LOCK TABLES `actions_aid` WRITE;
+/*!40000 ALTER TABLE `actions_aid` DISABLE KEYS */;
+/*!40000 ALTER TABLE `actions_aid` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -252,6 +299,94 @@ CREATE TABLE `blocked_ips` (
 LOCK TABLES `blocked_ips` WRITE;
 /*!40000 ALTER TABLE `blocked_ips` DISABLE KEYS */;
 /*!40000 ALTER TABLE `blocked_ips` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `blocks`
+--
+
+DROP TABLE IF EXISTS `blocks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `blocks` (
+  `bid` int(11) NOT NULL AUTO_INCREMENT,
+  `module` varchar(64) NOT NULL DEFAULT '',
+  `delta` varchar(32) NOT NULL DEFAULT '0',
+  `theme` varchar(64) NOT NULL DEFAULT '',
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  `weight` tinyint(4) NOT NULL DEFAULT '0',
+  `region` varchar(64) NOT NULL DEFAULT '',
+  `custom` tinyint(4) NOT NULL DEFAULT '0',
+  `throttle` tinyint(4) NOT NULL DEFAULT '0',
+  `visibility` tinyint(4) NOT NULL DEFAULT '0',
+  `pages` text NOT NULL,
+  `title` varchar(64) NOT NULL DEFAULT '',
+  `cache` tinyint(4) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`bid`),
+  UNIQUE KEY `tmd` (`theme`,`module`,`delta`),
+  KEY `list` (`theme`,`status`,`region`,`weight`,`module`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `blocks`
+--
+
+LOCK TABLES `blocks` WRITE;
+/*!40000 ALTER TABLE `blocks` DISABLE KEYS */;
+INSERT INTO `blocks` VALUES (1,'user','0','garland',1,0,'left',0,0,0,'','',-1),(2,'user','1','garland',1,0,'left',0,0,0,'','',-1),(3,'system','0','garland',1,10,'footer',0,0,0,'','',-1);
+/*!40000 ALTER TABLE `blocks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `blocks_roles`
+--
+
+DROP TABLE IF EXISTS `blocks_roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `blocks_roles` (
+  `module` varchar(64) NOT NULL,
+  `delta` varchar(32) NOT NULL,
+  `rid` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`module`,`delta`,`rid`),
+  KEY `rid` (`rid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `blocks_roles`
+--
+
+LOCK TABLES `blocks_roles` WRITE;
+/*!40000 ALTER TABLE `blocks_roles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `blocks_roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `boxes`
+--
+
+DROP TABLE IF EXISTS `boxes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `boxes` (
+  `bid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `body` longtext,
+  `info` varchar(128) NOT NULL DEFAULT '',
+  `format` smallint(6) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`bid`),
+  UNIQUE KEY `info` (`info`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `boxes`
+--
+
+LOCK TABLES `boxes` WRITE;
+/*!40000 ALTER TABLE `boxes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `boxes` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -593,6 +728,45 @@ CREATE TABLE `comment` (
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `comments`
+--
+
+DROP TABLE IF EXISTS `comments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `comments` (
+  `cid` int(11) NOT NULL AUTO_INCREMENT,
+  `pid` int(11) NOT NULL DEFAULT '0',
+  `nid` int(11) NOT NULL DEFAULT '0',
+  `uid` int(11) NOT NULL DEFAULT '0',
+  `subject` varchar(64) NOT NULL DEFAULT '',
+  `comment` longtext NOT NULL,
+  `hostname` varchar(128) NOT NULL DEFAULT '',
+  `timestamp` int(11) NOT NULL DEFAULT '0',
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `format` smallint(6) NOT NULL DEFAULT '0',
+  `thread` varchar(255) NOT NULL,
+  `name` varchar(60) DEFAULT NULL,
+  `mail` varchar(64) DEFAULT NULL,
+  `homepage` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`cid`),
+  KEY `pid` (`pid`),
+  KEY `nid` (`nid`),
+  KEY `comment_uid` (`uid`),
+  KEY `status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `comments`
+--
+
+LOCK TABLES `comments` WRITE;
+/*!40000 ALTER TABLE `comments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1111,6 +1285,38 @@ LOCK TABLES `file_usage` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `files`
+--
+
+DROP TABLE IF EXISTS `files`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `files` (
+  `fid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(10) unsigned NOT NULL DEFAULT '0',
+  `filename` varchar(255) NOT NULL DEFAULT '',
+  `filepath` varchar(255) NOT NULL DEFAULT '',
+  `filemime` varchar(255) NOT NULL DEFAULT '',
+  `filesize` int(10) unsigned NOT NULL DEFAULT '0',
+  `status` int(11) NOT NULL DEFAULT '0',
+  `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`fid`),
+  KEY `uid` (`uid`),
+  KEY `status` (`status`),
+  KEY `timestamp` (`timestamp`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `files`
+--
+
+LOCK TABLES `files` WRITE;
+/*!40000 ALTER TABLE `files` DISABLE KEYS */;
+/*!40000 ALTER TABLE `files` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `filter`
 --
 
@@ -1166,6 +1372,62 @@ LOCK TABLES `filter_format` WRITE;
 /*!40000 ALTER TABLE `filter_format` DISABLE KEYS */;
 INSERT INTO `filter_format` VALUES ('filtered_html','Filtered HTML',1,1,0),('full_html','Full HTML',1,1,1),('plain_text','Plain text',1,1,10);
 /*!40000 ALTER TABLE `filter_format` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `filter_formats`
+--
+
+DROP TABLE IF EXISTS `filter_formats`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `filter_formats` (
+  `format` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `roles` varchar(255) NOT NULL DEFAULT '',
+  `cache` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`format`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `filter_formats`
+--
+
+LOCK TABLES `filter_formats` WRITE;
+/*!40000 ALTER TABLE `filter_formats` DISABLE KEYS */;
+INSERT INTO `filter_formats` VALUES (1,'Filtered HTML',',1,2,',1),(2,'Full HTML','',1);
+/*!40000 ALTER TABLE `filter_formats` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `filters`
+--
+
+DROP TABLE IF EXISTS `filters`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `filters` (
+  `fid` int(11) NOT NULL AUTO_INCREMENT,
+  `format` int(11) NOT NULL DEFAULT '0',
+  `module` varchar(64) NOT NULL DEFAULT '',
+  `delta` tinyint(4) NOT NULL DEFAULT '0',
+  `weight` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`fid`),
+  UNIQUE KEY `fmd` (`format`,`module`,`delta`),
+  KEY `list` (`format`,`weight`,`module`,`delta`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `filters`
+--
+
+LOCK TABLES `filters` WRITE;
+/*!40000 ALTER TABLE `filters` DISABLE KEYS */;
+INSERT INTO `filters` VALUES (1,1,'filter',2,0),(2,1,'filter',0,1),(3,1,'filter',1,2),(4,1,'filter',3,10),(5,2,'filter',2,0),(6,2,'filter',1,1),(7,2,'filter',3,10);
+/*!40000 ALTER TABLE `filters` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1501,6 +1763,31 @@ LOCK TABLES `node_comment_statistics` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `node_counter`
+--
+
+DROP TABLE IF EXISTS `node_counter`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `node_counter` (
+  `nid` int(11) NOT NULL DEFAULT '0',
+  `totalcount` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `daycount` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`nid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `node_counter`
+--
+
+LOCK TABLES `node_counter` WRITE;
+/*!40000 ALTER TABLE `node_counter` DISABLE KEYS */;
+/*!40000 ALTER TABLE `node_counter` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `node_revision`
 --
 
@@ -1531,6 +1818,38 @@ CREATE TABLE `node_revision` (
 LOCK TABLES `node_revision` WRITE;
 /*!40000 ALTER TABLE `node_revision` DISABLE KEYS */;
 /*!40000 ALTER TABLE `node_revision` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `node_revisions`
+--
+
+DROP TABLE IF EXISTS `node_revisions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `node_revisions` (
+  `nid` int(10) unsigned NOT NULL DEFAULT '0',
+  `vid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL DEFAULT '0',
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `body` longtext NOT NULL,
+  `teaser` longtext NOT NULL,
+  `log` longtext NOT NULL,
+  `timestamp` int(11) NOT NULL DEFAULT '0',
+  `format` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`vid`),
+  KEY `nid` (`nid`),
+  KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `node_revisions`
+--
+
+LOCK TABLES `node_revisions` WRITE;
+/*!40000 ALTER TABLE `node_revisions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `node_revisions` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1566,6 +1885,33 @@ LOCK TABLES `node_type` WRITE;
 /*!40000 ALTER TABLE `node_type` DISABLE KEYS */;
 INSERT INTO `node_type` VALUES ('article','Article','node_content','node','Use <em>articles</em> for time-sensitive content like news, press releases or blog posts.','',1,'Title',1,1,0,0,'article'),('page','Basic page','node_content','node','Use <em>basic pages</em> for your static content, such as an \'About us\' page.','',1,'Title',1,1,0,0,'page');
 /*!40000 ALTER TABLE `node_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `permission`
+--
+
+DROP TABLE IF EXISTS `permission`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `permission` (
+  `pid` int(11) NOT NULL AUTO_INCREMENT,
+  `rid` int(10) unsigned NOT NULL DEFAULT '0',
+  `perm` longtext,
+  `tid` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`pid`),
+  KEY `rid` (`rid`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `permission`
+--
+
+LOCK TABLES `permission` WRITE;
+/*!40000 ALTER TABLE `permission` DISABLE KEYS */;
+INSERT INTO `permission` VALUES (1,1,'access content',0),(2,2,'access comments, access content, post comments, post comments without approval',0);
+/*!40000 ALTER TABLE `permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -2101,6 +2447,136 @@ INSERT INTO `taxonomy_vocabulary` VALUES (1,'Tags','tags','Use tags to group art
 UNLOCK TABLES;
 
 --
+-- Table structure for table `term_data`
+--
+
+DROP TABLE IF EXISTS `term_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `term_data` (
+  `tid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `vid` int(10) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `description` longtext,
+  `weight` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`tid`),
+  KEY `taxonomy_tree` (`vid`,`weight`,`name`),
+  KEY `vid_name` (`vid`,`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `term_data`
+--
+
+LOCK TABLES `term_data` WRITE;
+/*!40000 ALTER TABLE `term_data` DISABLE KEYS */;
+/*!40000 ALTER TABLE `term_data` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `term_hierarchy`
+--
+
+DROP TABLE IF EXISTS `term_hierarchy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `term_hierarchy` (
+  `tid` int(10) unsigned NOT NULL DEFAULT '0',
+  `parent` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`tid`,`parent`),
+  KEY `parent` (`parent`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `term_hierarchy`
+--
+
+LOCK TABLES `term_hierarchy` WRITE;
+/*!40000 ALTER TABLE `term_hierarchy` DISABLE KEYS */;
+/*!40000 ALTER TABLE `term_hierarchy` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `term_node`
+--
+
+DROP TABLE IF EXISTS `term_node`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `term_node` (
+  `nid` int(10) unsigned NOT NULL DEFAULT '0',
+  `vid` int(10) unsigned NOT NULL DEFAULT '0',
+  `tid` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`tid`,`vid`),
+  KEY `vid` (`vid`),
+  KEY `nid` (`nid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `term_node`
+--
+
+LOCK TABLES `term_node` WRITE;
+/*!40000 ALTER TABLE `term_node` DISABLE KEYS */;
+/*!40000 ALTER TABLE `term_node` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `term_relation`
+--
+
+DROP TABLE IF EXISTS `term_relation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `term_relation` (
+  `trid` int(11) NOT NULL AUTO_INCREMENT,
+  `tid1` int(10) unsigned NOT NULL DEFAULT '0',
+  `tid2` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`trid`),
+  UNIQUE KEY `tid1_tid2` (`tid1`,`tid2`),
+  KEY `tid2` (`tid2`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `term_relation`
+--
+
+LOCK TABLES `term_relation` WRITE;
+/*!40000 ALTER TABLE `term_relation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `term_relation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `term_synonym`
+--
+
+DROP TABLE IF EXISTS `term_synonym`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `term_synonym` (
+  `tsid` int(11) NOT NULL AUTO_INCREMENT,
+  `tid` int(10) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`tsid`),
+  KEY `tid` (`tid`),
+  KEY `name_tid` (`name`,`tid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `term_synonym`
+--
+
+LOCK TABLES `term_synonym` WRITE;
+/*!40000 ALTER TABLE `term_synonym` DISABLE KEYS */;
+/*!40000 ALTER TABLE `term_synonym` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `url_alias`
 --
 
@@ -2220,6 +2696,63 @@ INSERT INTO `variable` VALUES ('admin_theme','s:5:\"seven\";'),('authorize_filet
 UNLOCK TABLES;
 
 --
+-- Table structure for table `vocabulary`
+--
+
+DROP TABLE IF EXISTS `vocabulary`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `vocabulary` (
+  `vid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `description` longtext,
+  `help` varchar(255) NOT NULL DEFAULT '',
+  `relations` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `hierarchy` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `multiple` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `required` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `tags` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `module` varchar(255) NOT NULL DEFAULT '',
+  `weight` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`vid`),
+  KEY `list` (`weight`,`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `vocabulary`
+--
+
+LOCK TABLES `vocabulary` WRITE;
+/*!40000 ALTER TABLE `vocabulary` DISABLE KEYS */;
+/*!40000 ALTER TABLE `vocabulary` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `vocabulary_node_types`
+--
+
+DROP TABLE IF EXISTS `vocabulary_node_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `vocabulary_node_types` (
+  `vid` int(10) unsigned NOT NULL DEFAULT '0',
+  `type` varchar(32) NOT NULL DEFAULT '',
+  PRIMARY KEY (`type`,`vid`),
+  KEY `vid` (`vid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `vocabulary_node_types`
+--
+
+LOCK TABLES `vocabulary_node_types` WRITE;
+/*!40000 ALTER TABLE `vocabulary_node_types` DISABLE KEYS */;
+/*!40000 ALTER TABLE `vocabulary_node_types` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `watchdog`
 --
 
@@ -2264,4 +2797,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-06-07  2:12:39
+-- Dump completed on 2013-06-07  3:20:14
