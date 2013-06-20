@@ -1,0 +1,9 @@
+name = myajaxform
+description = 演示 模块
+core = 7.x
+package = hooface
+;php = 
+version =  7.x-1.0
+;dependencies[] = 
+files[] = myajaxform.module
+;configure = 

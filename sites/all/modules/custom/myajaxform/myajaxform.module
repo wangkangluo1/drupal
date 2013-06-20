@@ -1,0 +1,51 @@
+<?php
+ 
+/**
+* Implements hook_menu();
+*/
+function myajaxform_menu() {
+    /** hooface add* 
+     */
+     $items['myajaxform'] = array(
+        'title' => t('Save fashion comment'),
+        'page callback' => 'myajaxform_page',
+       // 'page arguments' => array(1),
+        'type' => MENU_CALLBACK,
+        'access callback' => true,
+    );
+    $items['user/fashion'] = array(
+        'title' => t('Save fashion comment'),
+        'page callback' => 'myajaxform_submit_callback',
+        'page arguments' => array(1),
+        'type' => MENU_CALLBACK,
+        'access callback' => true,
+    );
+     
+    return $items;
+      
+}
+ 
+function myajaxform_page() {
+    $output ='<div><form action="/node/939" method="post" id="imagenode-real-comment-form" accept-charset="UTF-8"><div><input type="hidden" name="nid" value="939">
+<div class="answer-comment"><div class="form-item form-type-textarea form-item-comment">
+  <div class="form-textarea-wrapper resizable textarea-processed resizable-textarea"><textarea id="edit-comment" name="comment" cols="60" rows="5" class="form-textarea"></textarea><div class="grippie"></div></div>
+</div>
+<input type="submit" id="edit-submitt-fashion" name="op" value="保存" class="form-submit"></div><input type="hidden" name="form_build_id" value="form-KI0pR-nKF4Qpviog1qj0XQUjOPKVJmPujeSiDSlCihY">
+<input type="hidden" name="form_token" value="v-EHXQ-ZypTk9Tr6YmIiL7x6c4d_5EoC9Kc8MTu_3Rw">
+<input type="hidden" name="form_id" value="imagenode_real_comment_form">
+</div></form></div>
+<div id="twippo-comment"></div>';
+    return $output;
+}
+ 
+function myajaxform_submit_callback($uid=1) {
+    $output = '返回的信息:'.$_POST['comment'];
+    unset($_POST['comment']);
+    drupal_json_output(array('status' => $uid, 'content' => $output));
+}
+/**
+ * Implements hook_init();
+ */
+function myajaxform_init() {
+	//drupal_add_js(drupal_get_path('module', 'myajaxform') . '/myajaxform.js');
+}
