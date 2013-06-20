@@ -1,0 +1,6 @@
+name = sitemode 
+description = "Ajax test." 
+package = Pro Drupal Development 
+core = 7.x 
+files[] = sitemode.module 
+scripts[] = jquery.js
