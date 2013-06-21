@@ -1,0 +1,102 @@
+<?php
+function sitemode_menu() {// 建立一个模块 sitemod
+  $items = array();
+  $items['ajax'] = array(
+    'page callback' => 'sitemode_callback_ajax',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['test/ajax'] = array(//调用form效果 见下图
+	  //'page callback' => 'drupal_get_form',
+    'page callback' => 'test_all',
+	  //'page arguments' => array('get_ajax_form'),// 得到定义好的表单
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+
+function test_all() {
+	return "<div>fuck of</div>";
+}
+
+/*
+function get_ajax_form(){//返回form选选项
+	drupal_add_js('http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js');
+  drupal_add_js(drupal_get_path('module', 'sitemode') . '/test_ajax.js');//加载js文件
+	
+  $form['note_book'] = array(
+    '#type' => 'radios',
+    '#title' => t('选择分类'),
+    '#default_value' => 'IBM',
+    '#options' => array(t('IBM'), t('Dell'), t('Sony'),t('HP')),
+    '#description' => t('选择你喜欢的品牌'),
+  );
+  
+  return  $form;
+}*/
+
+function sitemode_callback_ajax() {
+
+$id = $_POST['id']; //ajax post数据
+switch($id){
+  case 0:	
+	drupal_json_output(array('html' => 'funck the word'));//josn数据。form
+	//drupal_json_output(array('html' => drupal_get_form('ibm_form')));//josn数据。form
+     exit;
+     break;
+  case 1:
+    drupal_json_output(array( 'html' => drupal_get_form('dell_form')));
+      exit;
+     break;
+}
+
+}
+
+
+function ibm_form(){//定义表单
+  $form['ibm'] = array(
+  '#type' => 'checkboxes', 
+  '#title' => t('IBM最新型号电脑'), 
+  '#default_value' => array('T410'),
+  '#options' => array(
+    'T400' => t('T400'), 
+    'T410' => t('T410'), 
+    'X200' => t('X200'),
+    'X201' => t('X201'),
+    'T410S' => t('T410S'),
+  ),
+  '#description' => t('选择你喜欢的IBM型号'),
+   );
+    $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('保存选择的信息'),
+    '#weight' => 40,
+  );
+     $form_state['redirect'] = 'test/view';
+return $form;
+}
+
+function dell_form(){//定义表单
+  $form['dell'] = array(
+  '#type' => 'checkboxes', 
+  '#title' => t('Dell电脑'), 
+  '#default_value' => array('d1'),
+  '#options' => array(
+    'd1' => t('d1'), 
+    'd2' => t('d2'), 
+    'd3' => t('d3'),
+  ),
+  '#description' => t('选择你喜欢的dELL型号'),
+   );
+
+      $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('保存选择的信息'),
+    '#weight' => 40,
+  );
+
+return $form;//返回表单
+
+}
