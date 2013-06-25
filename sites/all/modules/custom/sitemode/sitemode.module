@@ -1,4 +1,17 @@
 <?php
+function sitemode_permission() {
+	
+  $perms = array(
+    'sitemode test' => array(
+      'title' => t('Sitemode test'),
+    ),
+  );
+  return $perms;
+	
+} //See more at: http://www.webomelette.com/define-check-custom-permission-drupal-7#sthash.vVhytv6Q.dpuf
+
+// And the associated access callback in views.module, which confirms the user is a views administrator who can generally execute PHP on the site.
+
 function sitemode_menu() {// 建立一个模块 sitemod
   $items = array();
   $items['ajax'] = array(
@@ -9,11 +22,14 @@ function sitemode_menu() {// 建立一个模块 sitemod
   $items['test/ajax'] = array(//调用form效果 见下图
     'page callback' => 'drupal_get_form',
     'page arguments' => array('get_ajax_form'),// 得到定义好的表单
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
+	  //'access arguments' => array('access content'),
+	'access callback' => array('sitemode test'),
+    'type' => MENU_SUGGESTED_ITEM,
+	  //'type' => MENU_CALLBACK,
   );
   return $items;
 }
+
 
 function get_ajax_form(){//返回form选选项
 	drupal_add_js('http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js');
@@ -34,9 +50,11 @@ function sitemode_callback_ajax() {
 $id = $_POST['id']; //ajax post数据
 switch($id){
   case 0:	
-	drupal_json_output(array('html' => 'funck the word'));//josn数据。form
-	//drupal_json_output(array('html' => drupal_get_form('ibm_form')));//josn数据。form
-     exit;
+	if(user_access('sitemode permission')) {
+	    drupal_json_output(array('html' => 'funck the word'));//josn数据。form
+	    //drupal_json_output(array('html' => drupal_get_form('ibm_form')));//josn数据。form		
+        exit;
+	}
      break;
   case 1:
     drupal_json_output(array( 'html' => drupal_get_form('dell_form')));
